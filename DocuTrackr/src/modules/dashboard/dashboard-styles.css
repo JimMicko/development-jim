@@ -1,0 +1,50 @@
+#dashboard {
+  border: 1px solid;
+  margin-left: 200px;
+  padding: 20px;
+  margin-top: 100px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.test {
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  background-color: #343a40;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+
+
+.logo {
+  height: 100px;
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+.dashboard-title {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  font-size: 40px;
+  color: aliceblue;
+  font-family: 'Belle MT', 'Times New Roman', serif;
+  flex-grow: 1;
+}
+
+.clock {
+  font-size: 1rem;
+  font-family: monospace;
+  white-space: nowrap;
+  color: aliceblue;
+  margin-right: 20px;
+  margin-left: auto; /* Push to the right */
+}
