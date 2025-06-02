@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+@import "./utils/css/main.26539193.css";
+
+html,
+body,
+#root,
+.app,
+.content {
+  height: calc(100vh - 64px);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+.app {
+  display: flex;
+  position: relative;
+}
+
+.collapsed .content {
+  width: calc(100% - 80px);
+}
+
+.content {
+  transition: width 0.3s;
+  overflow-x: hidden;
+  /* Add other styles as needed */
+}
+
+.pro-sidebar .pro-menu .pro-menu-item {
+  font-size: 15px;
+}
+
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 35px 8px 20px;
+  cursor: pointer;
+}
+
+.pro-inner-item {
+  padding: 5px 35px 5px 20px !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on Hover */
+::-webkit-scrollbar-track:hover {
+  background: #555;
+}
+
+.landing-page-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.landing-page-content {
+  text-align: center;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 64px);
+}
+
+.login-page .login-container {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-page .login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-page .login-container .error-message {
+  color: red;
+}
+
+.login-page .login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page .login-container label {
+  margin-bottom: 10px;
+}
+
+.login-page .login-container input {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.login-page .login-container button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-page .login-container .button-switch {
+  background-color: #fff000;
+  color: black;
+}
+
+.login-page .login-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.login-page .login-container button:hover {
+  background-color: #0056b3;
+}
+
+.wrap-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  line-height: normal;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  text-align: center;
+}
+
+/* TableStyles.css */
+
+.table-container,
+.table,
+.table-row,
+.table-cell {
+  background-color: white;
+  color: black;
+}
+
+.blink-yellow {
+  animation: blink-yellow-animation 1s steps(1, start) infinite;
+}
+
+.blink-red {
+  animation: blink-red-animation 1s steps(1, start) infinite;
+}
+
+@keyframes blink-yellow-animation {
+  0% {
+    background-color: #d6b500; /* Change background color to #D6B500 */
+  }
+  50% {
+    background-color: transparent; /* Change to transparent for dimming effect */
+  }
+  100% {
+    background-color: #d6b500; /* Return to #D6B500 */
+  }
+}
+
+@keyframes blink-red-animation {
+  0% {
+    background-color: red; /* Change background color to red */
+  }
+  50% {
+    background-color: transparent; /* Change to transparent for dimming effect */
+  }
+  100% {
+    background-color: red; /* Return to red */
+  }
+}
+
+.custom-toolbar {
+  color: black !important; /* Force the text color to black */
+}
+
+.custom-toolbar .MuiButton-root {
+  color: black !important; /* Ensure button text is black as well */
+}
+
+/* CSS for wrapping header text */
+.wrap-header-text .MuiDataGrid-columnHeaderTitle {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box; /* Enables line clamping */
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  line-clamp: 2; /* Non-standard (but future-facing) */
+  line-height: 1.2;
+  text-align: center;
+  height: 100%;
+  padding: 0 4px; /* Optional padding for spacing */
+}
