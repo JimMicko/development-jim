@@ -57,6 +57,26 @@ const App = () => {
   //   }
   // }, [location.pathname, navigate, user]);
 
+  useEffect(() => {
+    fetch("http://193.203.161.251:4242/auth/validate", {
+      method: "GET",
+      credentials: "include", // Important for cookies
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          const user = await response.json(); // or handle the returned user data
+          handleLogin(user); // Update state
+          navigate("/dashboard"); // Redirect to dashboard
+        } else if (response.status === 401) {
+          navigate("/login"); // Not authenticated
+        }
+      })
+      .catch((error) => {
+        console.error("Persistent login error:", error);
+        navigate("/login");
+      });
+  }, [navigate, handleLogin]);
+
   if (loading) {
     return <LoadingSpinner theme={theme} />;
   }

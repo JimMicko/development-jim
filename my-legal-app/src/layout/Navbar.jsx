@@ -20,7 +20,6 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import api from "../../api";
 
 const Navbar = () => {
   const location = useLocation();
@@ -37,25 +36,6 @@ const Navbar = () => {
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname === "/";
-
-  // const handleLogout = async () => {
-  //   try {
-  //     // Make a request to logout endpoint
-  //     const response = await api.get(`/logout`, {
-  //       withCredentials: true, // send cookies if any
-  //     });
-
-  //     if (response.status === 200) {
-  //       // Prevent navigation back to the session by clearing history
-  //       window.history.replaceState(null, "", response.data.route); // Replace history entry
-  //       navigate(response.data.route, { replace: true }); // Navigate to login or appropriate route
-  //       window.location.reload(); // Ensure all in-memory data is cleared      } else {
-  //     }
-  //   } catch (error) {
-  //     console.error("Logout error:", error);
-  //     // Handle error if necessary
-  //   }
-  // };
 
   const handleLogout = () => {
     try {
