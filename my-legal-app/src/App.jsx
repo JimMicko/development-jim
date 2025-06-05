@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {
@@ -26,13 +26,16 @@ const App = () => {
   const location = useLocation();
 
   // Function to update user information after successful login
-  const handleLogin = (userData) => {
-    setUser(userData);
-
-    navigate("/dashboard"); // Redirect to the default dashboard
-
-    setLoading(false); // Set loading to false after user data is set and navigation is done
-  };
+  const handleLogin = useCallback(
+    (userData) => {
+      console.log("Logging in:", userData);
+      localStorage.setItem("user", JSON.stringify(userData)); // persist
+      setUser(userData);
+      setLoading(false);
+      navigate("/dashboard");
+    },
+    [navigate]
+  );
 
   const handleUpdateUser = (updatedUser) => {
     setUser(updatedUser);
