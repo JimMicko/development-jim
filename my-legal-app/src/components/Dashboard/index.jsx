@@ -117,7 +117,6 @@ const Dashboard = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("Input changed:", name, value);
 
     setFormData((prev) => {
       let updatedData = { ...prev, [name]: value };
@@ -136,8 +135,6 @@ const Dashboard = () => {
       return updatedData;
     });
   };
-
-  console.log("Form Data:", formData);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();

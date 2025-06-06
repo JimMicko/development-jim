@@ -28,18 +28,20 @@ const App = () => {
   // Function to update user information after successful login
   const handleLogin = useCallback(
     (userData) => {
-      console.log("Logging in:", userData);
-      localStorage.setItem("user", JSON.stringify(userData)); // persist
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("loginToken", userData.loginToken);
+      localStorage.setItem("refreshToken", userData.refreshToken);
       setUser(userData);
       setLoading(false);
       navigate("/dashboard");
     },
     [navigate]
   );
-
   const handleUpdateUser = (updatedUser) => {
     setUser(updatedUser);
   };
+
+  console.log(document.cookie);
 
   // useEffect(() => {
   //   // Only fetch session data if user is not already set
@@ -61,23 +63,24 @@ const App = () => {
   // }, [location.pathname, navigate, user]);
 
   useEffect(() => {
-    fetch("http://193.203.161.251:4242/auth/validate", {
-      method: "GET",
-      credentials: "include", // Important for cookies
-    })
-      .then(async (response) => {
-        if (response.status === 200) {
-          const user = await response.json(); // or handle the returned user data
-          handleLogin(user); // Update state
-          navigate("/dashboard"); // Redirect to dashboard
-        } else if (response.status === 401) {
-          navigate("/login"); // Not authenticated
+    const validateToken = async () => {
+      const token = localStorage.getItem("loginToken");
+      console.log(token);
+      if (token) {
+        try {
+          const res = await api.get("/auth/validate");
+          console.log(res);
+          handleLogin(res.data); // rehydrate user data
+        } catch (err) {
+          console.log("Token validation failed:", err);
+          // Let interceptor handle refresh if applicable
         }
-      })
-      .catch((error) => {
-        console.error("Persistent login error:", error);
+      } else {
         navigate("/login");
-      });
+      }
+    };
+
+    validateToken();
   }, [navigate, handleLogin]);
 
   if (loading) {
