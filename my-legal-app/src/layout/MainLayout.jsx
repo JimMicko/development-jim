@@ -4,10 +4,10 @@ import RoleProtectedRoute from "../routes/RoleProtectedRoute";
 import UserRoutes from "../routes/UserRoutes";
 
 const MainLayout = ({ user, onUpdateUser }) => {
-  switch (user.userType) {
-    case "ADMIN":
+  switch (user.role) {
+    case "admin":
       return (
-        <RoleProtectedRoute user={user} allowedRoles={["ADMIN"]}>
+        <RoleProtectedRoute user={user} allowedRoles={["admin"]}>
           <UserRoutes user={user} onUpdateUser={onUpdateUser} />
         </RoleProtectedRoute>
       );

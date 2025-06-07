@@ -14,9 +14,7 @@ const root = createRoot(container);
 root.render(
   // <React.StrictMode>
   <Router>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <App />
   </Router>
   // </React.StrictMode>
 );

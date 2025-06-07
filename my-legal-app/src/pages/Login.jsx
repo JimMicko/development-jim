@@ -7,6 +7,9 @@ import { tokens } from "../theme";
 import LoadingSpinner from "../components/otherComponents/LoadingSpinner";
 import api from "../../api";
 import LandingPage from "./LandingPage";
+import axios from "axios";
+const ipAddress = import.meta.env.VITE_IP_ADDRESS;
+const contextRoot = import.meta.env.VITE_CONTEXT_ROOT;
 
 const Login = ({ onLogin }) => {
   const theme = useTheme();
@@ -41,30 +44,35 @@ const Login = ({ onLogin }) => {
     }
   };
 
-  const submitLogin = async (e) => {
-    e.preventDefault(); // prevent page refresh
+  console.log("pass");
+  console.log(isLogin);
+  console.log(verified);
 
-    const loginData = { username, password };
+  const submitLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await api.post("/auth/login", loginData);
+      const response = await axios.post(
+        `${ipAddress}${contextRoot}/auth/login`,
+        { username, password }
+      );
 
-      // response.data is the user object directly
-      const user = { ...response.data, userType: "ADMIN" };
+      const { loginToken, refreshToken, ...user } = response.data;
 
-      onLogin(user); // Update user state in App component
-      navigate("/dashboard"); // Redirect user to the specified URL
-    } catch (error) {
-      if (error.response) {
-        // Server returned an error status
-        alert(error.response.data?.message || "Invalid username or password.");
-        if (onLogin) onLogin(false, null);
-      } else {
-        // Network or other error
-        console.error("Login error:", error.message);
-        if (onLogin) onLogin(false, null);
+      // Store tokens locally
+      localStorage.setItem("user_id", user.user_id);
+      localStorage.setItem("loginToken", loginToken);
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
       }
+
+      console.log(user);
+
+      onLogin(user); // Update app user state
+      navigate("/dashboard");
+    } catch (error) {
+      // error handling
     } finally {
       setLoading(false);
     }

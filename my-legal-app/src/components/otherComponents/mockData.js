@@ -334,7 +334,7 @@ export const mockPieData = [
   {
     id: "Salaries",
     label: "Salaries",
-    value: 500000,
+    value: 300000,
   },
   {
     id: "Office Rent",
@@ -354,7 +354,7 @@ export const mockPieData = [
   {
     id: "Other Overheads",
     label: "Other Overheads",
-    value: 40000,
+    value: 80000,
   },
 ];
 
@@ -1108,16 +1108,16 @@ export const clients = [
     first_name: "Juan",
     last_name: "Dela Cruz",
     cases: [
-      { case_id: "case-1-1-uuid", case_title: "Land Dispute" },
-      { case_id: "case-1-2-uuid", case_title: "Labor Dispute" },
-      { case_id: "case-1-3-uuid", case_title: "Civil Case" },
-      { case_id: "case-1-4-uuid", case_title: "Medical Malpractice" },
-      { case_id: "case-1-5-uuid", case_title: "Wrongful Termination" },
-      { case_id: "case-1-6-uuid", case_title: "Harassment Complaint" },
-      { case_id: "case-1-7-uuid", case_title: "Contract Violation" },
-      { case_id: "case-1-8-uuid", case_title: "Environmental Damage" },
-      { case_id: "case-1-9-uuid", case_title: "Tax Evasion" },
-      { case_id: "case-1-10-uuid", case_title: "Defamation Lawsuit" },
+      { file_id: "case-1-1-uuid", case_title: "Land Dispute" },
+      { file_id: "case-1-2-uuid", case_title: "Labor Dispute" },
+      { file_id: "case-1-3-uuid", case_title: "Civil Case" },
+      { file_id: "case-1-4-uuid", case_title: "Medical Malpractice" },
+      { file_id: "case-1-5-uuid", case_title: "Wrongful Termination" },
+      { file_id: "case-1-6-uuid", case_title: "Harassment Complaint" },
+      { file_id: "case-1-7-uuid", case_title: "Contract Violation" },
+      { file_id: "case-1-8-uuid", case_title: "Environmental Damage" },
+      { file_id: "case-1-9-uuid", case_title: "Tax Evasion" },
+      { file_id: "case-1-10-uuid", case_title: "Defamation Lawsuit" },
     ],
   },
   {
@@ -1125,14 +1125,14 @@ export const clients = [
     first_name: "Maria",
     last_name: "Santos",
     cases: [
-      { case_id: "case-2-1-uuid", case_title: "Divorce Proceedings" },
-      { case_id: "case-2-2-uuid", case_title: "Child Custody" },
-      { case_id: "case-2-3-uuid", case_title: "Adoption Case" },
-      { case_id: "case-2-4-uuid", case_title: "Spousal Support" },
-      { case_id: "case-2-5-uuid", case_title: "Property Settlement" },
-      { case_id: "case-2-6-uuid", case_title: "Domestic Violence" },
-      { case_id: "case-2-7-uuid", case_title: "Restraining Order" },
-      { case_id: "case-2-8-uuid", case_title: "Inheritance Dispute" },
+      { file_id: "case-2-1-uuid", case_title: "Divorce Proceedings" },
+      { file_id: "case-2-2-uuid", case_title: "Child Custody" },
+      { file_id: "case-2-3-uuid", case_title: "Adoption Case" },
+      { file_id: "case-2-4-uuid", case_title: "Spousal Support" },
+      { file_id: "case-2-5-uuid", case_title: "Property Settlement" },
+      { file_id: "case-2-6-uuid", case_title: "Domestic Violence" },
+      { file_id: "case-2-7-uuid", case_title: "Restraining Order" },
+      { file_id: "case-2-8-uuid", case_title: "Inheritance Dispute" },
       { case_id: "case-2-9-uuid", case_title: "Marriage Annulment" },
       { case_id: "case-2-10-uuid", case_title: "Paternity Suit" },
     ],
@@ -1275,5 +1275,97 @@ export const clients = [
       { case_id: "case-10-9-uuid", case_title: "Unfair Competition" },
       { case_id: "case-10-10-uuid", case_title: "Antitrust Violation" },
     ],
+  },
+];
+
+export const lawFirmMemos = [
+  {
+    memo_id: "a1d2c3b4-5678-4e90-a123-45f6d7e8f901",
+    file_id: "CF2025-001",
+    client_name: "John Doe",
+    created_at: "2025-06-01 09:00:00",
+    details:
+      "Discussed preliminary evidence for contract dispute. Client provided copies of agreements.",
+    title: "Contract Dispute - Initial Meeting Notes",
+  },
+  {
+    memo_id: "b2e3f4c5-6789-4f01-b234-56g7h8i9j012",
+    file_id: "",
+    client_name: "Mary Smith",
+    created_at: "2025-06-01 14:30:00",
+    details:
+      "Filed motion to dismiss on jurisdiction grounds. Awaiting court response.",
+    title: "Motion to Dismiss Filed",
+  },
+  {
+    memo_id: "c3f4g5h6-7890-4g12-c345-67i8j9k0l123",
+    file_id: "CF2025-003",
+    client_name: "Alex Johnson",
+    created_at: "2025-06-02 11:15:00",
+    details:
+      "Reviewed witness statements and prepared list of potential cross-examination questions.",
+    title: "Witness Review and Prep",
+  },
+  {
+    memo_id: "d4g5h6i7-8901-4h23-d456-78j9k0l1m234",
+    file_id: "CF2025-004",
+    client_name: "Lisa Wong",
+    created_at: "2025-06-02 16:45:00",
+    details:
+      "Client requested updates on settlement negotiations. Drafted settlement proposal letter.",
+    title: "Settlement Negotiation Update",
+  },
+  {
+    memo_id: "e5h6i7j8-9012-4i34-e567-89k0l1m2n345",
+    file_id: "",
+    client_name: "Mark Davis",
+    created_at: "2025-06-03 10:00:00",
+    details:
+      "Received expert report on forensic analysis. Scheduled follow-up meeting for discussion.",
+    title: "Expert Report Received",
+  },
+  {
+    memo_id: "f6i7j8k9-0123-4j45-f678-90l1m2n3o456",
+    file_id: "CF2025-006",
+    client_name: "Emma Brown",
+    created_at: "2025-06-03 13:30:00",
+    details:
+      "Drafted reply brief for appellate court. Submitted for partner review.",
+    title: "Appellate Brief Drafted",
+  },
+  {
+    memo_id: "g7j8k9l0-1234-4k56-g789-01m2n3o4p567",
+    file_id: "CF2025-007",
+    client_name: "Michael Lee",
+    created_at: "2025-06-04 09:15:00",
+    details:
+      "Client meeting to discuss new evidence discovery. Updated case timeline accordingly.",
+    title: "New Evidence Discussion",
+  },
+  {
+    memo_id: "h8k9l0m1-2345-4l67-h890-12n3o4p5q678",
+    file_id: "CF2025-008",
+    client_name: "Sarah Green",
+    created_at: "2025-06-04 15:00:00",
+    details: "Prepared witness subpoena notices. Sent to process server.",
+    title: "Subpoena Preparation",
+  },
+  {
+    memo_id: "i9l0m1n2-3456-4m78-i901-23o4p5q6r789",
+    file_id: "",
+    client_name: "Robert King",
+    created_at: "2025-06-05 11:45:00",
+    details:
+      "Reviewed contract clauses with client. Advised on potential risks and amendments.",
+    title: "Contract Review and Advice",
+  },
+  {
+    memo_id: "j0m1n2o3-4567-4n89-j012-34p5q6r7s890",
+    file_id: "CF2025-010",
+    client_name: "Jessica White",
+    created_at: "2025-06-05 16:20:00",
+    details:
+      "Filed response to complaint. Coordinated with co-counsel for next steps.",
+    title: "Response to Complaint Filed",
   },
 ];

@@ -86,7 +86,7 @@ const BillableWorkModal = ({
         }}
       >
         <Typography variant="h6" component="h2">
-          {formData.id ? "Update Billable Work" : "Billable Work"}
+          {formData.id ? "Update Billable Work" : "Add Billable Work"}
         </Typography>
         <Typography variant="h6" component="h2" color="error">
           {showErrorMessage && errorMessage}
@@ -179,7 +179,6 @@ const BillableWorkModal = ({
           fullWidth
           required
           InputLabelProps={{
-            shrink: true,
             style: {
               color: colors.grey[100],
             },

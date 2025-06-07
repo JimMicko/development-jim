@@ -18,6 +18,11 @@ import Signup from "./pages/Signup";
 import MainLayout from "./layout/MainLayout";
 import LoadingSpinner from "./components/otherComponents/LoadingSpinner";
 
+import axios from "axios";
+
+const ipAddress = import.meta.env.VITE_IP_ADDRESS;
+const contextRoot = import.meta.env.VITE_CONTEXT_ROOT;
+
 const App = () => {
   const [user, setUser] = useState(null); // State to hold user information
   const [loading, setLoading] = useState(false); // State to indicate loading
@@ -28,64 +33,65 @@ const App = () => {
   // Function to update user information after successful login
   const handleLogin = useCallback(
     (userData) => {
+      if (!userData) return;
+
       localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("loginToken", userData.loginToken);
-      localStorage.setItem("refreshToken", userData.refreshToken);
+
+      if (userData.loginToken) {
+        localStorage.setItem("loginToken", userData.loginToken);
+      }
+
+      if (userData.refreshToken) {
+        localStorage.setItem("refreshToken", userData.refreshToken);
+      }
+
       setUser(userData);
       setLoading(false);
       navigate("/dashboard");
     },
     [navigate]
   );
+
   const handleUpdateUser = (updatedUser) => {
     setUser(updatedUser);
   };
 
-  console.log(document.cookie);
-
-  // useEffect(() => {
-  //   // Only fetch session data if user is not already set
-  //   if (!user && location.pathname.startsWith("/dashboard")) {
-  //     setLoading(true);
-  //     api
-  //       .get("/api/session", { withCredentials: true }) // use relative path
-  //       .then((response) => {
-  //         setUser(response.data.user);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching session data:", error);
-  //         navigate("/");
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   }
-  // }, [location.pathname, navigate, user]);
-
   useEffect(() => {
     const validateToken = async () => {
+      const user_id = localStorage.getItem("user_id");
+      console.log(user_id);
       const token = localStorage.getItem("loginToken");
       console.log(token);
-      if (token) {
-        try {
-          const res = await api.get("/auth/validate");
-          console.log(res);
-          handleLogin(res.data); // rehydrate user data
-        } catch (err) {
-          console.log("Token validation failed:", err);
-          // Let interceptor handle refresh if applicable
-        }
-      } else {
-        navigate("/login");
+      const token2 = localStorage.getItem("refreshToken");
+      console.log(token2);
+      if (!token) {
+        handleLogin(false, null);
+        return;
+      }
+
+      try {
+        // Call validate endpoint with Authorization header automatically via axios interceptor
+        const res = await api.get(`/auth/auth/validate/${user_id}`);
+        console.log("Validate response:", res.data);
+        handleLogin(res.data.user); // Update app user state with user info from backend
+      } catch (err) {
+        console.log("Token validation failed", err);
+        localStorage.clear(); // clear tokens if invalid
+        handleLogin(false, null);
       }
     };
 
     validateToken();
-  }, [navigate, handleLogin]);
+  }, []);
 
-  if (loading) {
-    return <LoadingSpinner theme={theme} />;
-  }
+  useEffect(() => {
+    const loginToken = localStorage.getItem("loginToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const user_id = localStorage.getItem("user_id");
+    console.log("Stored loginToken:", loginToken);
+    console.log("Stored refreshToken:", refreshToken);
+    console.log("Stored user_id:", user_id);
+  }, []); // run on mount
 
   return (
     <ColorModeContext.Provider value={colorMode}>
