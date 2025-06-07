@@ -21,6 +21,7 @@ const BillableWorkModal = ({
   open,
   onClose,
   formData,
+  clientsData,
   handleInputChange,
   clearFormData,
   handleFormSubmit,
@@ -29,40 +30,42 @@ const BillableWorkModal = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [clientData, setClientsData] = useState(clients);
-  const [clientCase, setClientCase] = useState([]);
+  const [clientCases, setClientCases] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const [employeeResponse] = await Promise.all([
-  //         api.get(`/userdashboard/getallclients`),
-  //       ]);
+  const handleClientSelect = async (newValue) => {
+    if (!newValue || !newValue.client_id) {
+      setClientCases([]);
+      // Also update formData.client_id to empty if needed
+      handleInputChange({
+        target: { name: "client_id", value: "" },
+      });
+      return;
+    }
 
-  //       console.log(employeeResponse.data.employees);
-  //       setClientsData(employeeResponse.data.employees);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
+    try {
+      setLoading(true);
 
-  //   fetchData();
-  // }, []);
+      // Remove extra } in URL and no need for Promise.all with one call
+      const clientCasesResponse = await api.post(`/userdashboard/getallcases`, {
+        client_id: newValue.client_id,
+      });
 
-  const handleClientSelect = (newValue) => {
-    // Update the client_id in formData
-    handleInputChange({
-      target: {
-        name: "client_id",
-        value: newValue ? newValue.client_id : "",
-      },
-    });
+      const clientCasesData = clientCasesResponse.data;
 
-    // Set the client's cases
-    if (newValue && newValue.cases) {
-      setClientCase(newValue.cases);
-    } else {
-      setClientCase([]); // Clear if none selected
+      setClientCases(clientCasesData);
+
+      // Update the client_id in formData
+      handleInputChange({
+        target: {
+          name: "client_id",
+          value: newValue.client_id,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching client cases:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,14 +111,14 @@ const BillableWorkModal = ({
           autoComplete="off"
         />
         <Autocomplete
-          options={clientData}
+          options={clientsData}
           getOptionLabel={(option) =>
             option.employeeId === ""
               ? ""
               : `${option.first_name} ${option.last_name}`
           }
           value={
-            clientData.find((emp) => emp.client_id === formData.client_id) ||
+            clientsData.find((emp) => emp.client_id === formData.client_id) ||
             null
           }
           onChange={(event, newValue) => {
@@ -140,9 +143,11 @@ const BillableWorkModal = ({
           )}
         />
         <Autocomplete
-          options={clientCase}
+          options={clientCases}
           getOptionLabel={(option) => option.case_title || ""}
-          value={clientCase.find((c) => c.case_id === formData.case_id) || null}
+          value={
+            clientCases.find((c) => c.case_id === formData.case_id) || null
+          }
           onChange={(event, newValue) => {
             handleInputChange({
               target: {

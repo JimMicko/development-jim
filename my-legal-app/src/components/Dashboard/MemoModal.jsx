@@ -30,42 +30,6 @@ const MemoModal = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [clientData, setClientsData] = useState(clients);
-  const [clientCase, setClientCase] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const [employeeResponse] = await Promise.all([
-  //         api.get(`/userdashboard/getallclients`),
-  //       ]);
-
-  //       console.log(employeeResponse.data.employees);
-  //       setClientsData(employeeResponse.data.employees);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  const handleClientSelect = (newValue) => {
-    // Update the client_id in formData
-    handleInputChange({
-      target: {
-        name: "client_id",
-        value: newValue ? newValue.client_id : "",
-      },
-    });
-
-    // Set the client's cases
-    if (newValue && newValue.cases) {
-      setClientCase(newValue.cases);
-    } else {
-      setClientCase([]); // Clear if none selected
-    }
-  };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -113,6 +77,7 @@ const MemoModal = ({
           value={formData.details}
           onChange={handleInputChange}
           fullWidth
+          required
           InputLabelProps={{
             style: {
               color: colors.grey[100],

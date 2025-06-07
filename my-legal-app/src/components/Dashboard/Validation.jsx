@@ -1,6 +1,6 @@
-// src/components/Dashboard/BillableWorkValidation.jsx
+// src/components/Dashboard/Validation.jsx
 
-export const Validation = (formData) => {
+export const BillableWorkValidation = (formData) => {
   const validationErrors = [];
 
   const isValidDate = (dateStr) => !isNaN(new Date(dateStr).getTime());
@@ -61,5 +61,45 @@ export const Validation = (formData) => {
   }
 
   // Return all collected validation errors
+  return validationErrors;
+};
+
+export const MemoValidation = (formData) => {
+  const validationErrors = [];
+
+  // Required: Title
+  if (!formData.title || formData.title.trim() === "") {
+    validationErrors.push("Title is required.");
+  }
+
+  // Required: Details
+  if (!formData.details || formData.details.trim() === "") {
+    validationErrors.push("Details are required.");
+  }
+
+  // Optional: File validation
+  if (formData.file) {
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+    // const maxSizeMB = 5;
+
+    // Validate file type
+    if (!allowedTypes.includes(formData.file.type)) {
+      validationErrors.push(
+        "File type not supported. Allowed types: PDF, JPEG, PNG, DOC, DOCX."
+      );
+    }
+
+    // // Validate file size
+    // if (formData.file.size > maxSizeMB * 1024 * 1024) {
+    //   validationErrors.push(`File size must be less than ${maxSizeMB}MB.`);
+    // }
+  }
+
   return validationErrors;
 };

@@ -52,8 +52,6 @@ const AdminSidebar = ({ user }) => {
     setSelected(currentTitle);
   }, [location, pathToTitleMap]);
 
-  console.log("AdminSidebar user:", user);
-
   useEffect(() => {
     const convertUint8ArrayToBlob = () => {
       // If no picture data, use fallback image

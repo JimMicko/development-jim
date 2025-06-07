@@ -30,9 +30,8 @@ import BarChart from "../otherComponents/BarChart";
 import StatBox from "../otherComponents/StatBox";
 import BillableWorkModal from "./BillableWorkModal";
 import api from "../../../api";
-import { Validation } from "./BillableWorkValidation";
+import { BillableWorkValidation, MemoValidation } from "./Validation";
 import axios from "axios";
-import { lawFirmMemos } from "../otherComponents/mockData";
 import MemoModal from "./MemoModal";
 
 const ipAddress = import.meta.env.VITE_IP_ADDRESS;
@@ -66,35 +65,39 @@ const Dashboard = ({ user }) => {
 
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
+  const [memoData, setMemoData] = useState([]);
+  const [clientsData, setClientsData] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [formData2, setFormData2] = useState(initialFormData2);
   const [loading, setLoading] = useState(true); // Loading state for data fetching
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-  console.log(user);
+  const ipAddress = import.meta.env.VITE_IP_ADDRESS;
+  const contextRoot = import.meta.env.VITE_CONTEXT_ROOT;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       console.log("pass");
-  //       const response = await axios.get(
-  //         `${ipAddress}${contextRoot}/auth/validate`,
-  //         {
-  //           // withCredentials: true, // ⚠️ send cookies
-  //         }
-  //       );
+  const fetchData = async () => {
+    try {
+      const [memosResponse, clientDataResponse] = await Promise.all([
+        api.get(`/userdashboard/getallmemos`),
+        api.get(`/userdashboard/getallclients`),
+      ]);
 
-  //       console.log(response.data);
+      const memos = memosResponse.data;
+      const clients = clientDataResponse.data;
 
-  //       setLoading(false); // Set loading to false once data is fetched
-  //     } catch (error) {
-  //       console.error("Error fetching employeeData:", error);
-  //     }
-  //   };
+      setMemoData(memos);
+      setClientsData(clients);
 
-  //   fetchData();
-  // }, []);
+      setLoading(false); // Set loading to false once data is fetched
+    } catch (error) {
+      console.error("Error fetching employeeData:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -157,7 +160,7 @@ const Dashboard = ({ user }) => {
     e.preventDefault();
 
     // Perform client-side validation
-    const validationErrors = Validation(formData);
+    const validationErrors = BillableWorkValidation(formData);
 
     if (validationErrors.length > 0) {
       setErrorMessage(validationErrors.join(", "));
@@ -171,7 +174,10 @@ const Dashboard = ({ user }) => {
     try {
       setLoading(true);
       if (formData.id) {
-        // await api.put(`/userdashboard/getallcases/${formData.id}`, formData);
+        await api.put(
+          `/userdashboard/createBillable /${formData.id}`,
+          formData
+        );
 
         Swal.fire({
           icon: "success",
@@ -179,8 +185,7 @@ const Dashboard = ({ user }) => {
           text: "Billable Work Updated Successfully!",
         });
       } else {
-        // http://localhost:8080/enwcore/userdashboard/getallcases
-        // await api.post(`/userdashboard/getallcases`, formData);
+        await api.post(`/userdashboard/createBillable`, formData);
 
         Swal.fire({
           icon: "success",
@@ -250,7 +255,7 @@ const Dashboard = ({ user }) => {
     e.preventDefault();
 
     // Perform client-side validation
-    const validationErrors = Validation(formData);
+    const validationErrors = MemoValidation(formData2);
 
     if (validationErrors.length > 0) {
       setErrorMessage(validationErrors.join(", "));
@@ -263,22 +268,38 @@ const Dashboard = ({ user }) => {
 
     try {
       setLoading(true);
-      if (formData.id) {
-        // await api.put(`/userdashboard/getallcases/${formData.id}`, formData);
+
+      // Create FormData instance
+      const formPayload = new FormData();
+
+      // Append all fields from formData2
+      for (const key in formData2) {
+        if (key === "file" && formData2.file) {
+          // Append file properly
+          formPayload.append("file", formData2.file);
+        } else if (formData2[key] !== undefined && formData2[key] !== null) {
+          formPayload.append(key, formData2[key]);
+        }
+      }
+
+      if (formData2.id) {
+        await axios.put(
+          `/userdashboard/creatememo/${formData2.id}`,
+          formPayload
+        );
 
         Swal.fire({
           icon: "success",
           title: "Updated!",
-          text: "Billable Work Updated Successfully!",
+          text: "Memo Updated Successfully!",
         });
       } else {
-        // http://localhost:8080/enwcore/userdashboard/getallcases
-        // await api.post(`/userdashboard/getallcases`, formData);
-
+        await api.post(`/userdashboard/creatememo`, formPayload);
+        handleCloseModal2();
         Swal.fire({
           icon: "success",
           title: "Submitted!",
-          text: "Billable Work Submitted Successfully!",
+          text: "Memo Submitted Successfully!",
         });
       }
 
@@ -287,6 +308,7 @@ const Dashboard = ({ user }) => {
       // setShowSuccessMessage(true);
       // setOpenTransactionModal(false);
       handleCloseModal2();
+      fetchData();
       setLoading(false);
     } catch (error) {
       console.error("Error:", error);
@@ -532,7 +554,7 @@ const Dashboard = ({ user }) => {
                   backgroundColor={colors.primary[400]}
                 >
                   <Typography variant="h5" fontWeight="600">
-                    Memo Board ({lawFirmMemos.length})
+                    Memo Board ({memoData.length})
                   </Typography>
                 </Box>
                 <Box
@@ -541,7 +563,7 @@ const Dashboard = ({ user }) => {
                   position="relative"
                   sx={{ overflowY: "scroll", height: "calc(100% - 80px)" }}
                 >
-                  {lawFirmMemos
+                  {memoData
                     .slice() // clone array so original not mutated
                     .sort(
                       (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -567,7 +589,6 @@ const Dashboard = ({ user }) => {
                           color="text.secondary"
                           gutterBottom
                         >
-                          Case ID: {memo.case_id} | Client: {memo.client_name} |
                           Date: {new Date(memo.created_at).toLocaleString()}
                         </Typography>
                         <Typography variant="body2" mb={1}>
@@ -647,6 +668,7 @@ const Dashboard = ({ user }) => {
         open={openModal}
         onClose={handleCloseModal}
         formData={formData}
+        clientsData={clientsData}
         handleInputChange={handleInputChange}
         clearFormData={clearFormData}
         handleFormSubmit={handleFormSubmit}

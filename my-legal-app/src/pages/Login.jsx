@@ -44,10 +44,6 @@ const Login = ({ onLogin }) => {
     }
   };
 
-  console.log("pass");
-  console.log(isLogin);
-  console.log(verified);
-
   const submitLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -61,13 +57,14 @@ const Login = ({ onLogin }) => {
       const { loginToken, refreshToken, ...user } = response.data;
 
       // Store tokens locally
-      localStorage.setItem("user_id", user.user_id);
+      const parsedUserData = typeof user === "string" ? JSON.parse(user) : user;
+
+      localStorage.setItem("user", JSON.stringify(parsedUserData));
+
       localStorage.setItem("loginToken", loginToken);
       if (refreshToken) {
         localStorage.setItem("refreshToken", refreshToken);
       }
-
-      console.log(user);
 
       onLogin(user); // Update app user state
       navigate("/dashboard");

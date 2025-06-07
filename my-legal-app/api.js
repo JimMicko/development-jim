@@ -6,10 +6,6 @@ const contextRoot = import.meta.env.VITE_CONTEXT_ROOT;
 
 const api = axios.create({
   baseURL: `${ipAddress}${contextRoot}`,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  // withCredentials: true, // If you use cookies for auth
 });
 
 // Request interceptor to add token to headers
@@ -19,6 +15,12 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // ❗️Only set Content-Type if not FormData
+    if (!(config.data instanceof FormData) && !config.headers["Content-Type"]) {
+      config.headers["Content-Type"] = "application/json";
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
